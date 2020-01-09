@@ -1,0 +1,9 @@
+{
+  "generator-node": {
+    "promptValues": {
+      "authorName": "Masahiro Harada",
+      "authorEmail": "poe.422@gmail.com",
+      "authorUrl": ""
+    }
+  }
+}
