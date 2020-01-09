@@ -1,38 +1,45 @@
 'use strict';
+const fs = require('fs');
 const Generator = require('yeoman-generator');
 const chalk = require('chalk');
-const yosay = require('yosay');
 
 module.exports = class extends Generator {
-  prompting() {
-    // Have Yeoman greet the user.
-    this.log(
-      yosay(`Welcome to the outstanding ${chalk.red('generator-hypertext')} generator!`)
-    );
+  constructor(args, opts) {
+    super(args, opts);
 
-    const prompts = [
-      {
-        type: 'confirm',
-        name: 'someAnswer',
-        message: 'Would you like to enable this option?',
-        default: true
-      }
-    ];
-
-    return this.prompt(prompts).then(props => {
-      // To access props later use this.props.someAnswer;
-      this.props = props;
-    });
+    this.argument('appname', { type: String, required: true });
   }
 
   writing() {
+    const { appname } = this.options;
+
     this.fs.copy(
-      this.templatePath('dummyfile.txt'),
-      this.destinationPath('dummyfile.txt')
+      this.templatePath('!(package.json.ejs)'),
+      this.destinationPath(appname),
+      { globOptions: { dot: true } }
+    );
+
+    this.fs.copy(this.templatePath('src'), this.destinationPath(appname));
+    this.fs.copy(this.templatePath('tasks'), this.destinationPath(appname));
+
+    this.fs.copyTpl(
+      this.templatePath('package.json.ejs'),
+      this.destinationPath(`${appname}/package.json`),
+      { appname }
     );
   }
 
-  install() {
-    this.installDependencies();
+  end() {
+    this.log(
+      `\n\n` +
+      `   Project successfully created ✨ 🌈 🦄 🌈 ✨` +
+      `\n\n` +
+      `   ${chalk.gray('$')} ` +
+      chalk.green(`cd ${this.options.appname}`) +
+      `\n\n` +
+      `   ${chalk.gray('$')} ` +
+      chalk.green(`npm install`) + ` or ` + chalk.green(`yarn`) +
+      `\n`
+    );
   }
 };
