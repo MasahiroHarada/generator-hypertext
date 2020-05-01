@@ -1,6 +1,6 @@
 {
   "name": "generator-hypertext",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Yeoman generator for modern frontend coding with gulp, webpack, ejs, sass, es2015.",
   "homepage": "",
   "author": {
