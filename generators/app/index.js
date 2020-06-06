@@ -14,9 +14,14 @@ module.exports = class extends Generator {
     const { appname } = this.options;
 
     this.fs.copy(
-      this.templatePath("!(package.json.ejs)"),
+      this.templatePath("!(package.json.ejs|_gitignore)"),
       this.destinationPath(appname),
       { globOptions: { dot: true } }
+    );
+
+    this.fs.copy(
+      this.templatePath("_gitignore"),
+      this.destinationPath(`${appname}/.gitignore`)
     );
 
     const dirs = ["src", "tasks"];
